@@ -70,7 +70,7 @@ class bit_buffer {
             // Not enough bits in this byte to write all the bits required
             if (this->bit_index_ + bits > bits_per_byte) {
                 const uint8_t remainder_bits = this->bit_index_ + bits - bits_per_byte;
-                const uint32_t remainder_value = (data & (0xFF >> (bits_per_byte - remainder_bits)));
+                const uint32_t remainder_value = (data & (0xFFFFFFFF >> (32 - remainder_bits)));
 
                 this->buffer_[this->pos_] |= (data >> remainder_bits);
 
@@ -239,6 +239,7 @@ class bit_buffer {
         uint32_t read_bits(const size_t bit_index, const size_t num_bits);
 
         inline const bytes_t get_bytes() const { return this->buffer_; }
+        inline size_t size() const { return buffer_.size(); }
         bit_iterator create_iter() const;
 
 
